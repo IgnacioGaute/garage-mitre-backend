@@ -7,10 +7,10 @@ import { BoxList } from './entities/box-list.entity';
 import { CreateOtherPaymentDto } from './dto/create-other-payment.dto';
 import { OtherPayment } from './entities/other-payment.entity';
 
-import * as dayjs from 'dayjs';
-import * as utc from 'dayjs/plugin/utc';
-import * as timezone from 'dayjs/plugin/timezone';
-import * as isBetween from 'dayjs/plugin/isBetween'; 
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import isBetween from 'dayjs/plugin/isBetween'; 
 import { UpdateOtherPaymentDto } from './dto/update-other-payment.dto';
 
 dayjs.extend(utc);
@@ -62,7 +62,7 @@ async createBox(createBoxListDto: CreateBoxListDto) {
     await queryRunner.commitTransaction();
 
     return savedBox;
-  } catch (error) {
+  } catch (error: any) {
     await queryRunner.rollbackTransaction();
     this.logger.error(error.message, error.stack);
     throw error;
@@ -78,7 +78,7 @@ async createBox(createBoxListDto: CreateBoxListDto) {
       const boxes = await this.boxListRepository.find()
       return boxes
 
-    }catch (error) {
+    } catch (error: any) {
       this.logger.error(error.message, error.stack);
     }
   }
@@ -96,7 +96,7 @@ async createBox(createBoxListDto: CreateBoxListDto) {
       const savedBox = await repo.save(updateBox); 
   
       return savedBox;
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(error.message, error.stack);
       throw error;
     }
@@ -141,7 +141,7 @@ async createBox(createBoxListDto: CreateBoxListDto) {
       }
   
       return boxList;
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`Error buscando BoxList por fecha: ${error.message}`, error.stack);
       throw error;
     }
@@ -158,7 +158,7 @@ async createBox(createBoxListDto: CreateBoxListDto) {
         throw new NotFoundException('Box list not found')
       }
       return boxListWithRegistrations;
-    } catch (error) {
+    } catch (error: any) {
       if (!(error instanceof NotFoundException)) {
         this.logger.error(error.message, error.stack);
       }
@@ -177,7 +177,7 @@ async createBox(createBoxListDto: CreateBoxListDto) {
       await this.boxListRepository.remove(owner);
 
       return {message: 'Box list removed successfully'}
-    } catch (error) {
+    } catch (error: any) {
       if (!(error instanceof NotFoundException)) {
         this.logger.error(error.message, error.stack);
       }
@@ -215,7 +215,7 @@ async createBox(createBoxListDto: CreateBoxListDto) {
       const savedOtherPayment = await this.otherPaymentepository.save(otherPayment); 
 
       return savedOtherPayment;
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(error.message, error.stack);
     }
   }
@@ -239,7 +239,7 @@ async createBox(createBoxListDto: CreateBoxListDto) {
       const savedOtherPayment = await this.otherPaymentepository.save(otherPayment); 
 
       return savedOtherPayment;
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(error.message, error.stack);
     }
   }
@@ -253,7 +253,7 @@ async createBox(createBoxListDto: CreateBoxListDto) {
       });
   
       return expenses;
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(error.message, error.stack);
     }
   }
@@ -272,7 +272,7 @@ async createBox(createBoxListDto: CreateBoxListDto) {
       await this.otherPaymentepository.remove(expense);
 
       return {message: 'Expense removed successfully'}
-    } catch (error) {
+    } catch (error: any) {
       if (!(error instanceof NotFoundException)) {
         this.logger.error(error.message, error.stack);
       }
@@ -291,7 +291,7 @@ async createBox(createBoxListDto: CreateBoxListDto) {
   
       // Actualizar el totalPrice con tu método existente
       return await this.updateBox(boxList.id, { totalPrice });
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`❌ Error al actualizar BoxList para ${date}: ${error.message}`);
       throw error;
     }

@@ -43,7 +43,7 @@ export class UsersService {
       }
 
       return await this.userRepository.save(user);
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(error.message, error.stack);
     }
   }
@@ -60,7 +60,7 @@ export class UsersService {
           email: [FilterOperator.EQ, FilterOperator.ILIKE],
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(error.message, error.stack);
     }
   }
@@ -76,7 +76,7 @@ export class UsersService {
       }
 
       return user;
-    } catch (error) {
+    } catch (error: any) {
       if (!(error instanceof NotFoundException)) {
         this.logger.error(error.message, error.stack);
       }
@@ -126,7 +126,7 @@ export class UsersService {
 
       this.logger.log(`User "${result.email}" updated successfully`);
       return result;
-    } catch (error) {
+    } catch (error: any) {
       if (
         !(
           error instanceof NotFoundException ||
@@ -150,7 +150,7 @@ export class UsersService {
       await this.userRepository.remove(user);
 
       return { message: 'User removed successfully' };
-    } catch (error) {
+    } catch (error: any) {
       if (!(error instanceof NotFoundException)) {
         this.logger.error(error.message, error.stack);
       }
@@ -190,7 +190,7 @@ export class UsersService {
       user.password = hashedPassword;
 
       return this.userRepository.save(user);
-    } catch (error) {
+    } catch (error: any) {
       if (
         !(
           error instanceof NotFoundException ||

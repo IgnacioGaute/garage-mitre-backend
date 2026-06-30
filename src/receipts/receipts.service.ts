@@ -8,10 +8,10 @@ import { Customer, CustomerType } from 'src/customers/entities/customer.entity';
 import { Receipt } from './entities/receipt.entity';
 import { UpdateReceiptDto } from './dto/update-receipt.dto';
 
-import * as dayjs from 'dayjs';
-import * as utc from 'dayjs/plugin/utc';
-import * as timezone from 'dayjs/plugin/timezone';
-import * as isBetween from 'dayjs/plugin/isBetween'; 
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import isBetween from 'dayjs/plugin/isBetween'; 
 import { LessThan } from "typeorm";
 import { ReceiptPayment } from './entities/receipt-payment.entity';
 import { PaymentHistoryOnAccount } from './entities/payment-history-on-account.entity';
@@ -113,7 +113,7 @@ async createReceipt(customerId: string, manager: EntityManager, price?: number, 
     }
 
     return await manager.save(receipt);
-  } catch (error) {
+  } catch (error: any) {
     if (!(error instanceof NotFoundException)) {
       this.logger.error(error.message, error.stack);
     }
@@ -732,7 +732,7 @@ async updateReceipt(
 
     await queryRunner.commitTransaction();
     return receipt;
-  } catch (error) {
+  } catch (error: any) {
     await queryRunner.rollbackTransaction();
     if (!(error instanceof NotFoundException)) {
       this.logger.error(error.message, error.stack);
@@ -918,7 +918,7 @@ async cancelReceipt(receiptId: string, customerId: string) {
     console.log("✅ [cancelReceipt] Completado correctamente");
 
     return customer;
-  } catch (error) {
+  } catch (error: any) {
     console.error("❌ [cancelReceipt] Error:", error);
     await queryRunner.rollbackTransaction();
     throw error;
@@ -977,7 +977,7 @@ async createReceiptMan(dateNowFront: string, customerType: CustomerType): Promis
     this.logger.log('Recibos del mes finalizados correctamente');
 
     return createdReceipts;
-  } catch (err) {
+  } catch (err: any) {
     await qr.rollbackTransaction();
     this.logger.error('Error en generación manual de recibos', err.stack);
     throw err;
@@ -1018,7 +1018,7 @@ async createReceiptMan(dateNowFront: string, customerType: CustomerType): Promis
 //     // ⬇️ Un único commit al final, fuera del for
 //     await queryRunner.commitTransaction();
 //     this.logger.log('updateInterests: transacción confirmada');
-//   } catch (error) {
+//   } catch (error: any) {
 //     // rollback en caso de cualquier fallo
 //     await queryRunner.rollbackTransaction();
 //     this.logger.error('Error al actualizar intereses', error.stack);
@@ -1055,7 +1055,7 @@ async createReceiptMan(dateNowFront: string, customerType: CustomerType): Promis
         }
     
         return pendingReceipts;
-      } catch (error) {
+      } catch (error: any) {
         if (!(error instanceof NotFoundException)) {
           this.logger.error(error.message, error.stack);
         }
@@ -1081,7 +1081,7 @@ async createReceiptMan(dateNowFront: string, customerType: CustomerType): Promis
         }
 
         return receipt;
-      }catch (error) {
+      } catch (error: any) {
         if (!(error instanceof NotFoundException)) {
           this.logger.error(error.message, error.stack);
         }
@@ -1094,7 +1094,7 @@ async createReceiptMan(dateNowFront: string, customerType: CustomerType): Promis
         const receipts = await this.receiptRepository.find({relations: ['payments', 'customer','customer.vehicleRenters', 'customer.vehicleRenters.vehicle', 'customer.vehicleRenters.vehicle.customer']})
 
         return receipts;
-      }catch (error) {
+      } catch (error: any) {
         if (!(error instanceof NotFoundException)) {
           this.logger.error(error.message, error.stack);
         }
@@ -1140,7 +1140,7 @@ async createReceiptMan(dateNowFront: string, customerType: CustomerType): Promis
         await this.receiptRepository.remove(receipt); 
 
         return { message: 'Recibo eliminado correctamente' };
-      } catch (error) {
+      } catch (error: any) {
         if (!(error instanceof NotFoundException)) {
           this.logger.error(error.message, error.stack);
         }

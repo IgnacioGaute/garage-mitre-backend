@@ -15,10 +15,10 @@ import { UpdateTicketRegistrationDto } from './dto/update-ticket-registration.dt
 import { FilterOperator, paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { CreateTicketRegistrationForDayDto, UpdateTicketStatusDto } from './dto/create-ticket-registration-for-day.dto';
 import { TicketRegistrationForDay } from './entities/ticket-registration-for-day.entity';
-import * as dayjs from 'dayjs';
-import * as utc from 'dayjs/plugin/utc';
-import * as timezone from 'dayjs/plugin/timezone';
-import * as isBetween from 'dayjs/plugin/isBetween'; 
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import isBetween from 'dayjs/plugin/isBetween'; 
 import { TicketPrice } from './entities/ticket-price.entity';
 import { CreateTicketPriceDto } from './dto/create-ticket-price.dto';
 import { UpdateTicketPriceDto } from './dto/update-ticket-price.dto';
@@ -73,7 +73,7 @@ export class TicketsService {
       const savedTicket = await this.ticketPriceRepository.save(ticketPrice);
 
       return savedTicket;
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(error.message, error.stack);
       throw error;
     }
@@ -90,7 +90,7 @@ export class TicketsService {
           ticketTimeType: [FilterOperator.EQ, FilterOperator.ILIKE],
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(error.message, error.stack);
     }
   }
@@ -137,7 +137,7 @@ async updateTicketPrice(id: string, updateTicketPriceDto: UpdateTicketPriceDto) 
     const savedTicket = await this.ticketPriceRepository.save(updateTicket); 
 
     return savedTicket;
-  } catch (error) {
+  } catch (error: any) {
       if (!(error instanceof NotFoundException)) {
         this.logger.error(error.message, error.stack);
       }
@@ -156,7 +156,7 @@ async removeTicketPrice(id: string) {
     await this.ticketPriceRepository.remove(ticket);
 
     return {message: 'Ticket Price removed successfully'}
-  } catch (error) {
+  } catch (error: any) {
     if (!(error instanceof NotFoundException)) {
       this.logger.error(error.message, error.stack);
     }
@@ -179,7 +179,7 @@ async removeTicketPrice(id: string) {
       const savedTicket = await this.ticketRepository.save(ticket);
 
       return savedTicket;
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(error.message, error.stack);
     }
   }
@@ -195,7 +195,7 @@ async removeTicketPrice(id: string) {
             vehicleType: [FilterOperator.EQ, FilterOperator.ILIKE],
           },
         });
-      } catch (error) {
+      } catch (error: any) {
         this.logger.error(error.message, error.stack);
       }
     }
@@ -222,7 +222,7 @@ async removeTicketPrice(id: string) {
       const savedTicket = await this.ticketRepository.save(updateTicket); 
 
       return savedTicket;
-    } catch (error) {
+    } catch (error: any) {
         if (!(error instanceof NotFoundException)) {
           this.logger.error(error.message, error.stack);
         }
@@ -241,7 +241,7 @@ async removeTicketPrice(id: string) {
       await this.ticketRepository.remove(ticket);
 
       return {message: 'Ticket list removed successfully'}
-    } catch (error) {
+    } catch (error: any) {
       if (!(error instanceof NotFoundException)) {
         this.logger.error(error.message, error.stack);
       }
@@ -300,7 +300,7 @@ async removeTicketPrice(id: string) {
           const now = argentinaTime.format('YYYY-MM-DD')
             return await this.updateRegistration(existingRegistration, now, ticket);
         }
-    } catch (error) {
+    } catch (error: any) {
         this.logger.error(error.message, error.stack);
     }
 }
@@ -386,7 +386,7 @@ async createRegistrationForDay(createTicketRegistrationForDayDto: CreateTicketRe
       
     const savedTicket = await this.ticketRegistrationForDayRepository.save(ticket);
     return savedTicket;
-  } catch (error) {
+  } catch (error: any) {
       this.logger.error(error.message, error.stack);
   }
 }
@@ -395,7 +395,7 @@ async createRegistrationForDay(createTicketRegistrationForDayDto: CreateTicketRe
       try {
         const ticketsDays = await this.ticketRegistrationForDayRepository.find()
         return ticketsDays;
-      } catch (error) {
+      } catch (error: any) {
         this.logger.error(error.message, error.stack);
       }
     }
@@ -474,7 +474,7 @@ async createRegistrationForDay(createTicketRegistrationForDayDto: CreateTicketRe
       await this.ticketRegistrationForDayRepository.remove(ticket);
 
       return {message: 'Ticket list removed successfully'}
-    } catch (error) {
+    } catch (error: any) {
       if (!(error instanceof NotFoundException)) {
         this.logger.error(error.message, error.stack);
       }
@@ -560,7 +560,7 @@ async updateRegistration(existingRegistration: TicketRegistration, formattedDay:
         this.ticketGateway.emitNewRegistration(savedTicket);
 
         return savedTicket;
-    } catch (error) {
+    } catch (error: any) {
         this.logger.error(error.message, error.stack);
     }
 }
@@ -574,7 +574,7 @@ async updateRegistration(existingRegistration: TicketRegistration, formattedDay:
           });
 
         return registrations;
-    } catch (error) {
+    } catch (error: any) {
         this.logger.error(error.message, error.stack);
     }
   }
@@ -586,7 +586,7 @@ async updateRegistration(existingRegistration: TicketRegistration, formattedDay:
             throw new NotFoundException('Registration not found')
         }
         return registration;
-    }  catch (error) {
+    } catch (error: any) {
         if (!(error instanceof NotFoundException)) {
           this.logger.error(error.message, error.stack);
         }

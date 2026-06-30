@@ -18,10 +18,10 @@ import { ParkingType } from './entities/parking-type.entity';
 import { CreateParkingTypeDto } from './dto/create-parking-type.dto';
 import { UpdateParkingTypeDto } from './dto/update-parking-type.dto';
 
-import * as dayjs from 'dayjs';
-import * as utc from 'dayjs/plugin/utc';
-import * as timezone from 'dayjs/plugin/timezone';
-import * as isBetween from 'dayjs/plugin/isBetween'; 
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import isBetween from 'dayjs/plugin/isBetween'; 
 import { NotificationGateway } from 'src/notes/notification-gateway';
 import { v4 as uuidv4 } from 'uuid'; 
 import { NotificationInterestGateway } from './notification-interest-gateway';
@@ -304,7 +304,7 @@ export class CustomersService {
     
         await queryRunner.commitTransaction();
         return savedCustomer;
-      } catch (error) {
+      } catch (error: any) {
         await queryRunner.rollbackTransaction();
         console.error(error.stack);
         this.logger.error(error.message, error.stack);
@@ -334,7 +334,7 @@ async findAll(customerType: CustomerType) {
       withDeleted: true,
     });
     return customers;
-  } catch (error) {
+  } catch (error: any) {
     this.logger.error(error.message, error.stack);
     throw error;
   }
@@ -362,7 +362,7 @@ async findAll(customerType: CustomerType) {
       });
   
       return customer;
-    } catch (error) {
+    } catch (error: any) {
       if (!(error instanceof NotFoundException)) {
         this.logger.error(error.message, error.stack);
       }
@@ -871,7 +871,7 @@ async findAll(customerType: CustomerType) {
 
       await queryRunner.commitTransaction();
       return savedCustomer;
-    } catch (error) {
+    } catch (error: any) {
       await queryRunner.rollbackTransaction();
       this.logger.error(error.message, error.stack);
       throw error;
@@ -915,7 +915,7 @@ async findAll(customerType: CustomerType) {
       await queryRunner.commitTransaction();
   
       return { message: 'Customer removed successfully' };
-    } catch (error) {
+    } catch (error: any) {
       await queryRunner.rollbackTransaction();
       this.logger.error(error.message, error.stack);
       throw error;
@@ -960,7 +960,7 @@ async findAll(customerType: CustomerType) {
             // console.log(`Se eliminaron recibos de julio 2025`);
 
       return {message: 'Customer removed successfully'}
-    } catch (error) {
+    } catch (error: any) {
       if (!(error instanceof NotFoundException)) {
         this.logger.error(error.message, error.stack);
       }
@@ -999,7 +999,7 @@ async findAll(customerType: CustomerType) {
       await this.customerRepository.save(customer);
 
       return {message: 'Customer restored successfully'}
-    } catch (error) {
+    } catch (error: any) {
       if (!(error instanceof NotFoundException)) {
         this.logger.error(error.message, error.stack);
       }
@@ -1013,7 +1013,7 @@ async findAll(customerType: CustomerType) {
       const interest = this.interestSettingsRepository.create(createInterestSettingDto);
       await this.interestSettingsRepository.save(interest);
       return interest;
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(error.message, error.stack);
       throw error;
     }
@@ -1027,7 +1027,7 @@ async findAll(customerType: CustomerType) {
       });
       
       return latestInterest // Retorna el primer elemento si existe
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`Error al buscar el interés: ${error.message}`);
       throw error;
     }
@@ -1107,13 +1107,13 @@ async findAll(customerType: CustomerType) {
   
 //           this.logger.log(`Cliente ${customer.id} actualizado. Nuevo precio: ${pendingReceipt.price}`);
   
-//         } catch (error) {
+//         } catch (error: any) {
 //           this.logger.error(`Error procesando cliente ${customer.id}: ${error.message}`);
 //         }
 //       }
   
 //       this.logger.log('Intereses actualizados correctamente.');
-//     } catch (error) {
+//     } catch (error: any) {
 //       this.logger.error('Error al actualizar intereses', error.stack);
 //     }
 //   }
@@ -1181,7 +1181,7 @@ async updateAmount(updateAmountAllCustomerDto: UpdateAmountAllCustomerDto) {
     }
 
     return { message: 'Monto actualizado correctamente', customers };
-  } catch (error) {
+  } catch (error: any) {
     this.logger.error(error.message, error.stack);
     throw error;
   }
@@ -1208,7 +1208,7 @@ async createParkingType(createParkingTypeDto: CreateParkingTypeDto) {
 
 
     return savedParkingType;
-  } catch (error) {
+  } catch (error: any) {
     this.logger.error(error.message, error.stack);
     throw error;
   }
@@ -1225,7 +1225,7 @@ async createParkingType(createParkingTypeDto: CreateParkingTypeDto) {
         },
         relations: ['vehicles']
       });
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(error.message, error.stack);
     }
   }
@@ -1288,7 +1288,7 @@ async updateparkingType(parkingTypeId: string, updateParkingTypeDto: UpdateParki
     const savedParkingType = await this.parkingTypeRepository.save(updatedParkingType)
 
     return savedParkingType
-  } catch (error) {
+  } catch (error: any) {
     if (!(error instanceof NotFoundException)) {
       this.logger.error(error.message, error.stack)
     }
@@ -1308,7 +1308,7 @@ async removeParkingType(parkingTypeId: string) {
     await this.parkingTypeRepository.remove(parkingType);
 
     return {message: 'Parking Type list removed successfully'}
-  } catch (error) {
+  } catch (error: any) {
     if (!(error instanceof NotFoundException)) {
       this.logger.error(error.message, error.stack);
     }
@@ -1325,7 +1325,7 @@ async getCustomerVehicleRenter() {
     });
 
     return vehicles;
-  } catch (error) {
+  } catch (error: any) {
     if (!(error instanceof NotFoundException)) {
       this.logger.error(error.message, error.stack);
     }
@@ -1352,7 +1352,7 @@ async getCustomerthird() {
     });
 
     return filteredCustomers;
-  } catch (error) {
+  } catch (error: any) {
     if (!(error instanceof NotFoundException)) {
       this.logger.error(error.message, error.stack);
     }
@@ -1379,7 +1379,7 @@ async changeCustomerOwner(vechileRenterId: string, newVehicleId: string){
     vechileRenterPrivate.vehicle = vechileNewOwner;
     vechileRenterPrivate.garageNumber = vechileNewOwner.garageNumber;
     await this.vehicleRenterRepository.save(vechileRenterPrivate);
-  } catch (error) {
+  } catch (error: any) {
     if (!(error instanceof NotFoundException)) {
       this.logger.error(error.message, error.stack);
     }

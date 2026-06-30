@@ -8,9 +8,9 @@ import { FilterOperator, paginate, Paginated, PaginateQuery } from 'nestjs-pagin
 import { User } from 'src/users/entities/user.entity';
 import { NotificationGateway } from './notification-gateway';
 import { v4 as uuidv4 } from 'uuid'; 
-import * as dayjs from 'dayjs';
-import * as utc from 'dayjs/plugin/utc';
-import * as timezone from 'dayjs/plugin/timezone';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -61,7 +61,7 @@ export class NotesService {
         });
     
         return note;
-      } catch (error) {
+      } catch (error: any) {
         this.logger.error(error.message, error.stack);
         throw error;
       }
@@ -79,7 +79,7 @@ export class NotesService {
         },
         relations: ['user'],
       });
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(error.message, error.stack);
     }
   }
@@ -96,7 +96,7 @@ export class NotesService {
       }
   
       return note;
-    } catch (error) {
+    } catch (error: any) {
       if (!(error instanceof NotFoundException)) {
         this.logger.error(error.message, error.stack);
       }
@@ -120,7 +120,7 @@ export class NotesService {
       const savedNote = await this.noteRepository.save(updateNote);
 
       return savedNote
-    } catch (error) {
+    } catch (error: any) {
       if (!(error instanceof NotFoundException)) {
         this.logger.error(error.message, error.stack);
       }
@@ -142,7 +142,7 @@ export class NotesService {
       await this.noteRepository.remove(note);
 
       return {message: 'Note removed successfully'}
-    } catch (error) {
+    } catch (error: any) {
       if (!(error instanceof NotFoundException)) {
         this.logger.error(error.message, error.stack);
       }

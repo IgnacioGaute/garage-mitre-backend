@@ -94,7 +94,7 @@ export class ScannerService {
           return { success: false, message: 'No se pudo encontrar el recibo.' };
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Error al procesar el código de barras:', error);
       this.isScanning = false;
       return { success: false, message: 'Error al procesar el código de barras.' };
